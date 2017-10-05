@@ -1,0 +1,515 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"tor",
+				"torrentpath"
+			],
+			[
+				"torr",
+				"torrentpath"
+			],
+			[
+				"to",
+				"torrentdir"
+			],
+			[
+				"ex",
+				"exec_script"
+			],
+			[
+				"get_defi",
+				"get_defined_constants〔function〕"
+			],
+			[
+				"user",
+				"$user_profile〔variable〕"
+			],
+			[
+				"var",
+				"var_dump〔function〕"
+			],
+			[
+				"has",
+				"hasOne〔function〕"
+			],
+			[
+				"fun",
+				"function"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "Dockerfile",
+			"settings":
+			{
+				"buffer_size": 1621,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 138.0,
+		"last_filter": "update",
+		"selected_items":
+		[
+			[
+				"update",
+				"Package Control: Upgrade/Overwrite All Packages"
+			],
+			[
+				"mater",
+				"Material Theme: Configuration"
+			],
+			[
+				"the",
+				"Material Theme: Extras"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"package",
+				"Package Control: Upgrade Package"
+			],
+			[
+				"SublimeLinter",
+				"SublimeLinter: Choose Lint Mode"
+			],
+			[
+				"ren",
+				"File: Rename"
+			],
+			[
+				"renam",
+				"File: Rename"
+			],
+			[
+				"package control sa",
+				"Package Control: Satisfy Dependencies"
+			],
+			[
+				"space",
+				"Trailing Spaces: Toggle Trailing Spaces Highlighting"
+			],
+			[
+				"Mater",
+				"Material Theme: Configuration"
+			],
+			[
+				"user",
+				"Preferences: Settings - User"
+			],
+			[
+				"search",
+				"File: Search Files"
+			],
+			[
+				"",
+				"About"
+			],
+			[
+				"menu",
+				"View: Toggle Menu"
+			],
+			[
+				"Material",
+				"Material Theme: Activate theme"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 592.0
+	},
+	"console":
+	{
+		"height": 184.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/X/docker-deluge-openvpn",
+		"/X/docker-deluge-openvpn/root",
+		"/X/docker-deluge-openvpn/root/etc"
+	],
+	"file_history":
+	[
+		"/X/docker-deluge-openvpn/transmission/userSetup.sh",
+		"/X/docker-deluge-openvpn/transmission/updatePort.sh",
+		"/X/docker-deluge-openvpn/transmission/stop.sh",
+		"/X/docker-deluge-openvpn/transmission/start.sh",
+		"/X/docker-deluge-openvpn/.gitignore",
+		"/X/docker-deluge-openvpn/DockerEnv",
+		"/C/Users/viktor/unlocker.sh",
+		"/Z/development/deluge-vpn/Dockerfile",
+		"/C/Users/viktor/AppData/Local/Temp/7zO845245AA/Plex Media Server.log",
+		"/Z/downloads/exec_script",
+		"/Z/downloads/exec_script.log",
+		"/C/Users/viktor/AppData/Local/Temp/7zECA08886D/Plex Media Server.log",
+		"/C/Users/viktor/AppData/Local/Temp/7zECA06F1CC/Plex Media Server.log",
+		"/C/Users/viktor/AppData/Local/Temp/7zE4A703595/Plex Crash Uploader.log",
+		"/C/Users/viktor/AppData/Local/Temp/7zE4A7BDDE5/Plex Media Server.log",
+		"/C/Users/viktor/Downloads/Plex Media Server Logs_2017-10-02_01-42-47/Plex Media Server.log",
+		"/Z/development/snapraid.sh",
+		"/C/Users/viktor/Downloads/Plex Media Server Logs_2017-10-02_01-42-47/com.plexapp.system.log",
+		"/C/Users/viktor/Downloads/Plex Media Server Logs_2017-08-17_17-47-53/Plex Media Server.log",
+		"/C/Users/viktor/Downloads/Plex Media Server Logs_2017-08-17_17-33-24/Plex Media Server.log",
+		"/C/Users/viktor/AppData/Local/Google/Chrome/User Data/Local State",
+		"/C/Users/viktor/Downloads/Plex Media Server Logs_2017-08-17_17-27-33/Plex Media Server.log",
+		"/C/Users/viktor/Downloads/Plex Media Server Logs_2017-08-17_17-27-33/Plex Transcoder Statistics.log",
+		"/C/Users/viktor/Downloads/Plex Media Server Logs_2017-08-17_17-33-24/Plex Transcoder Statistics.log",
+		"/X/foron-frontend/config/app.php",
+		"/X/foron-frontend/app/Providers/RouteServiceProvider.php",
+		"/X/foron-frontend/app/Http/Controllers/ProfileController.php",
+		"/X/foron-frontend/app/Models/UserProfile.php",
+		"/X/foron-frontend/app/Models/User.php",
+		"/X/foron-frontend/app/Http/Controllers/BidController.php",
+		"/X/foron-frontend/resources/views/layouts/partials/_header.blade.php",
+		"/X/foron-frontend/resources/views/layouts/partials/_navigation.blade.php",
+		"/X/foron-frontend/resources/views/layouts/master.blade.php",
+		"/X/foron-frontend/resources/views/layouts/partials/_footer.blade.php",
+		"/X/foron-frontend/routes/dev.php",
+		"/X/foron-frontend/app/Providers/DevEnvServiceProvider.php",
+		"/X/foron-frontend/resources/views/dashboard.blade.php",
+		"/X/foron-frontend/resources/views/profile.blade.php",
+		"/X/foron-frontend/resources/views/item-index.blade.php",
+		"/X/foron-frontend/readme.md",
+		"/X/foron-frontend/composer.json",
+		"/X/foron-frontend/composer.lock",
+		"/X/foron-frontend/config/log-viewer.php",
+		"/X/foron-frontend/artisan",
+		"/X/foron-frontend/resources/views/home.blade.php",
+		"/X/foron-frontend/resources/views/welcome.blade.php",
+		"/X/foron-frontend/app/Http/Controllers/Auth/LoginController.php",
+		"/X/foron-frontend/app/Http/Controllers/Auth/RegisterController.php",
+		"/X/foron-frontend/app/Http/Controllers/HomeController.php",
+		"/X/foron-frontend/routes/web.php",
+		"/X/foron-frontend/config/auth.php",
+		"/X/foron-frontend/config/services.php",
+		"/X/foron-frontend/resources/views/auth/login.blade.php",
+		"/X/foron-frontend/app/Http/Controllers/Auth/ResetPasswordController.php",
+		"/X/foron-frontend/.env",
+		"/X/foron-frontend/app/Models/Item.php",
+		"/X/foron-frontend/app/Item.php",
+		"/X/foron-frontend/foro-frontend.sublime-project",
+		"/X/foro-frontend/database/migrations/2014_10_12_000000_create_users_table.php",
+		"/X/foro-frontend/composer.json",
+		"/X/foro-frontend/config/database.php",
+		"/X/foro-frontend/config/debugbar.php",
+		"/X/foro-frontend/foro-frontend.sublime-project",
+		"/X/foro-frontend/app/User.php",
+		"/X/foro-frontend/app/Console/Kernel.php",
+		"/X/foro-frontend/app/Exceptions/Handler.php",
+		"/X/foro-frontend/app/Http/Kernel.php",
+		"/X/foro-frontend/app/Http/Controllers/Controller.php",
+		"/X/foro-frontend/app/Http/Controllers/Auth/ForgotPasswordController.php",
+		"/X/foro-frontend/app/Http/Controllers/Auth/LoginController.php",
+		"/X/foro-frontend/app/Http/Controllers/Auth/RegisterController.php",
+		"/X/foro-frontend/app/Http/Controllers/Auth/ResetPasswordController.php",
+		"/X/foro-frontend/app/Http/Middleware/EncryptCookies.php",
+		"/X/foro-frontend/app/Http/Middleware/RedirectIfAuthenticated.php",
+		"/X/foro-frontend/app/Http/Middleware/VerifyCsrfToken.php",
+		"/X/foro-frontend/app/Providers/AppServiceProvider.php",
+		"/X/foro-frontend/app/Providers/AuthServiceProvider.php",
+		"/X/foro-frontend/app/Providers/BroadcastServiceProvider.php",
+		"/X/foro-frontend/app/Providers/EventServiceProvider.php",
+		"/X/foro-frontend/app/Providers/RouteServiceProvider.php",
+		"/X/foro-frontend/bootstrap/app.php",
+		"/X/foro-frontend/config/app.php",
+		"/X/foro-frontend/config/auth.php",
+		"/X/foro-frontend/config/services.php",
+		"/X/foro-frontend/database/factories/ModelFactory.php",
+		"/X/foro-frontend/vendor/composer/autoload_psr4.php",
+		"/X/foro-frontend/vendor/composer/autoload_static.php",
+		"/X/foro-frontend/storage/logs/laravel.log",
+		"/X/foro-frontend/app/Http/routes.php",
+		"/X/foro-frontend/app/Http/Controllers/HomeController.php",
+		"/C/Users/viktor/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/X/foro-frontend/.env",
+		"/X/foro-frontend/.env.example"
+	],
+	"find":
+	{
+		"height": 25.0
+	},
+	"find_in_files":
+	{
+		"height": 158.0,
+		"where_history":
+		[
+			"<current file>",
+			"C:\\Users\\viktor\\Downloads\\Plex Media Server Logs_2017-10-02_01-42-47",
+			"<current file>",
+			"",
+			"X:\\foro-frontend"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"error",
+			"permiss",
+			"eac3_eae",
+			"error",
+			"transcode",
+			"adam",
+			"transcoder",
+			"error",
+			"Arcanedev",
+			"5.4",
+			"laravel",
+			"HomeController",
+			"Foro-frontend",
+			"font_size"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"DashboardController",
+			"foro"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "Dockerfile",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1621,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								626,
+								626
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+								},
+								"icon":
+								{
+								},
+								"open":
+								{
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content"
+							],
+							"git_gutter_is_enabled": true,
+							"syntax": "Packages/Dockerfile Syntax Highlighting/Syntaxes/Dockerfile.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 25.0
+	},
+	"input":
+	{
+		"height": 65.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": false,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "docker-deluge-openvpn.sublime-project",
+	"replace":
+	{
+		"height": 46.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"layout",
+				"resources\\views\\layouts\\app.blade.php"
+			],
+			[
+				"rout",
+				"routes\\web.php"
+			],
+			[
+				"user.p",
+				"app\\Models\\User.php"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 295.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

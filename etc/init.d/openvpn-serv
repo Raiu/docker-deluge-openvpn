@@ -1,0 +1,260 @@
+#!/sbin/openrc-run
+# Copyright 1999-2007 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+extra_commands="cronjob upgrade"
+service_name="openvpn"
+description="VPN service"
+description_start="Start ${service_name}"
+description_stop="Stop ${service_name}"
+description_upgrade="Upgrade ${service_name} if update is available"
+description_cronjob="Re-start if service ${service_name} has crashed. Should be executed from cron job"
+
+user_name="deluge"
+user_group="media"
+
+pkg_name="openvpn"
+pkg_arch="x86_64"
+pkg_repo="http://nl.alpinelinux.org/alpine/v3.5/main"
+
+command_file="/usr/sbin/openvpn"
+
+vpn_provider="$(echo $OPENVPN_PROVIDER | tr '[A-Z]' '[a-z]')"
+vpn_provider_configs="/etc/openvpn/$vpn_provider"
+vpn_config_file=""
+
+if [ -n "${vpn_provider}" ] && [ ${SVCNAME} != "openvpn" ]; then
+	vpnpid="/var/run/openvpn.${vpn_provider}.pid"
+else
+	vpnpid="/var/run/openvpn.pid"
+fi
+
+depend() {
+	need localmount net
+	use dns
+	after bootmisc
+}
+
+add_missing_path() {
+    path="$1"
+    uid_name="$2"
+    gid_name="$3"
+    if [ ! -z "${path}" ] && [ ! -d "${path}" ]; then
+        mkdir -p "${path}"
+        if [ ! -z "${uid_name}" ] && [ ! -z "${gid_name}" ]; then
+            chown -R ${uid_name}:${gid_name} "${path}"
+        fi
+    fi
+}
+
+file_age() {
+    file="$1"
+    cur_time=$(($(date +%s)))
+    file_time=$(($(date -r ${file} +%s)))
+    file_age=$((${cur_time} - ${file_time}))
+    echo "${file_age}"
+}
+
+is_running() {
+    ret_val=0
+    if [ -f "${config_path}/${service_name}.pid" ]; then
+        pid=$(cat "${config_path}/${service_name}.pid")
+        cmd_running=$(cat "/proc/${pid}/cmdline" | grep "${command_file}" | wc -l)
+        if [ $cmd_running -ge 1 ]; then
+            ret_val=1
+        fi
+    fi
+    echo "${ret_val}"
+}
+
+validate_user() {
+
+    uid_name="$1"
+    gid_name="$2"
+    
+    if [ ! -z "${uid_name}" ] && [ ! -z "${gid_name}" ]; then
+
+        if [ ! -z "${PUID}" ] && [ ! "$(id -u ${uid_name})" -eq "${PUID}" ]; then
+            usermod -o -u "${PUID}" ${uid_name}
+        fi
+
+        if [ ! -z "${PGID}" ] && [ ! "$(id -g ${uid_name})" -eq "${PGID}" ]; then
+            groupmod -o -g "${PGID}" ${gid_name}
+        fi
+        
+        # Change ownerships
+        chown -R ${uid_name}:${gid_name} /config
+        chown ${uid_name}:${gid_name} /data
+    fi
+}
+
+upgrade() {
+    if [ ! -x "${command_file}" ]; then
+        einfo "${pkg_name} is not installed or broken. Re-installing ${pkg_name}"
+        apk --quiet --no-cache del ${pkg_name}
+        apk --quiet --no-cache --repository "${pkg_repo}" add ${pkg_name}
+    else
+        touch "${config_path}/.upgrade_check"
+        updateAvail=$(apk --no-cache --repository "${pkg_repo}" version ${pkg_name} | grep ${pkg_name})
+        if [ "$updateAvail" != "${updateAvail/</}" ]; then
+            current_version=$(echo "${updateAvail}" | awk -F"<" '{print $1}' | sed "s/${pkg_name}-//g" | tr -d '[:space:]')
+            remote_version=$(echo "${updateAvail}" | awk -F"<" '{print $2}' | tr -d '[:space:]')
+            einfo "Upgrading ${pkg_name} from version ${current_version} to version ${remote_version}"
+            started=$(is_running)
+            if [ "${started}" = "1" ]; then
+                /etc/init.d/openvpn-serv stop
+            fi
+            apk --quiet --no-cache del ${pkg_name}
+            apk --quiet --no-cache --repository "${pkg_repo}" add ${pkg_name}
+            if [ "${started}" = "1" ]; then
+                /etc/init.d/openvpn-serv start
+            fi
+        else
+            einfo "No upgrade available at the moment for ${pkg_name}."
+        fi
+    fi
+}
+
+auto_upgrade() {
+    try_upgrade="0"
+    if [ ! -f "${config_path}/.upgrade_check" ]; then
+        try_upgrade="1"
+    else
+        since_last_upgrade=$(($(file_age "${config_path}/.upgrade_check")))
+        if [ $since_last_upgrade -ge 86400 ]; then
+            try_upgrade="1"
+        fi
+    fi
+    if [ "${try_upgrade}" = "1" ]; then
+        upgrade
+    fi    
+}
+
+checkconfig() {
+
+	if [ ! -c "/dev/net/tun" ]; then
+		if [ ! -d "/dev/net" ]; then
+			mkdir -p /dev/net
+		fi
+		mknod /dev/net/tun c 10 200
+	fi
+
+	if [ ! -c "/dev/net/tun" ]; then
+		eerror "TUN interface not available."
+		return 1
+	fi
+
+	if [ ! -d "$vpn_provider_configs" ]; then
+		eerror "Could not find OpenVPN provider: $OPENVPN_PROVIDER"
+		return 1
+	fi
+
+	if [ ! -z "$OPENVPN_CONFIG" ]; then
+		if [ -f $vpn_provider_configs/"${OPENVPN_CONFIG}".ovpn ]; then
+			vpn_config_file=$vpn_provider_configs/${OPENVPN_CONFIG}.ovpn
+		else
+			vpn_config_file=$vpn_provider_configs/default.ovpn
+		fi
+	else
+		vpn_config_file=$vpn_provider_configs/default.ovpn
+	fi
+
+	if [ "${OPENVPN_USERNAME}" = "**None**" ] || [ "${OPENVPN_PASSWORD}" = "**None**" ] ; then
+		eerror "OpenVPN credentials not set. Exiting."
+		return 1
+	else
+		mkdir -p /config
+		echo $OPENVPN_USERNAME > /config/openvpn-credentials.txt
+		echo $OPENVPN_PASSWORD >> /config/openvpn-credentials.txt
+		chmod 600 /config/openvpn-credentials.txt
+	fi
+	
+	if [ -z ${vpn_config_file} ] || [ ! -f "${vpn_config_file}" ]; then
+		eerror "VPN Configuration $vpn_config_file does" \
+			"not exist."
+		return 1
+	fi
+}
+
+start() {
+	# If we are re-called by the openvpn gentoo-up.sh script
+	# then we don't actually want to start openvpn
+	if [ "${IN_BACKGROUND}" = "true" ]; then
+		return 0
+	fi
+	
+	ebegin "Starting ${service_name}"
+
+	# Upgrade if possible
+	auto_upgrade
+
+	checkconfig || return 1
+	validate_user
+
+	local args="" reenter=${RE_ENTER:-no}
+	# If the config file does not specify the cd option, we do
+	# But if we specify it, we override the config option which we do not want
+
+	if ! grep -q "^[ 	]*cd[ 	].*" "${vpn_provider_configs}" ; then
+		config_path=$(dirname "$vpn_provider_configs")
+		args="${args} --cd ${config_path}"
+	fi
+
+	# We mark the service as inactive and then start it.
+	# When we get an authenticated packet from the peer then we run our script
+	# which configures our DNS if any and marks us as up.
+
+	reenter="yes"
+	args="${args} --up-delay --up-restart"
+	args="${args} --script-security 2"
+	args="${args} --up /etc/openvpn/deluge-up.sh"
+	args="${args} --down-pre --down /etc/openvpn/deluge-down.sh"
+
+	# Warn about the inability to change ip/route/dns information when
+	# dropping privs
+	if grep -q "^[ 	]*user[ 	].*" "${vpn_config_file}" ; then
+		ewarn "WARNING: You are dropping root privileges!"
+		ewarn "As such openvpn may not be able to change ip, routing"
+		ewarn "or DNS configuration."
+	fi
+
+	# Ensure that our scripts get the PEER_DNS variable
+	[ -n "${PEER_DNS}" ] && args="${args} --setenv PEER_DNS ${PEER_DNS}"
+
+	[ "${reenter}" = "yes" ] && mark_service_inactive "${SVCNAME}"
+
+	#oma
+
+	# Persist transmission settings for use by transmission-daemon
+	dockerize -template /etc/transmission/environment-variables.tmpl:/etc/transmission/environment-variables.sh /bin/true
+
+	if [ -n "${LOCAL_NETWORK-}" ]; then
+		eval $(/sbin/ip r l m 0.0.0.0 | awk '{if($5!="tun0"){print "GW="$3"\nINT="$5; exit}}')
+		if [ -n "${GW-}" -a -n "${INT-}" ]; then
+			/sbin/ip r a "$LOCAL_NETWORK" via "$GW" dev "$INT"
+		fi
+	fi
+
+	start-stop-daemon --start \
+		--exec ${command_file} \
+		--pidfile "${vpnpid}" \
+		-- --config "${vpn_config_file}" --writepid "${vpnpid}" --daemon \
+		--setenv SVCNAME "${SVCNAME}" ${args}
+	eend $? "Check your logs to see why startup failed"
+}
+
+stop() {
+	# If we are re-called by the openvpn gentoo-down.sh script
+	# then we don't actually want to stop openvpn
+	if [ "${IN_BACKGROUND}" = "true" ] ; then
+		mark_service_inactive "${SVCNAME}"
+		return 0
+	fi
+
+	ebegin "Stopping ${service_name}"
+	start-stop-daemon --stop --quiet \
+		--exec /usr/sbin/openvpn --pidfile "${vpnpid}"
+	eend $?
+}
+
+# vim: set ts=4 :

@@ -1,30 +1,101 @@
-[linuxserverurl]: https://linuxserver.io
-[forumurl]: https://forum.linuxserver.io
-[ircurl]: https://www.linuxserver.io/irc/
-[podcasturl]: https://www.linuxserver.io/podcast/
-[appurl]: http://deluge-torrent.org/
-[hub]: https://hub.docker.com/r/linuxserver/deluge/
+# Raiu/deluge-openvpn
 
-[![linuxserver.io](https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/linuxserver_medium.png)][linuxserverurl]
+![deluge](https://avatars2.githubusercontent.com/u/6733935?v=3&s=200)
 
-The [LinuxServer.io][linuxserverurl] team brings you another container release featuring easy user mapping and community support. Find us for support at:
-* [forum.linuxserver.io][forumurl]
-* [IRC][ircurl] on freenode at `#linuxserver.io`
-* [Podcast][podcasturl] covers everything to do with getting the most from your Linux Server plus a focus on all things Docker and containerisation!
+[Deluge](http://deluge-torrent.org/) is a lightweight, Free Software, cross-platform BitTorrent client.
 
-# linuxserver/deluge
-[![](https://images.microbadger.com/badges/version/linuxserver/deluge.svg)](https://microbadger.com/images/linuxserver/deluge "Get your own version badge on microbadger.com")[![](https://images.microbadger.com/badges/image/linuxserver/deluge.svg)](https://microbadger.com/images/linuxserver/deluge "Get your own image badge on microbadger.com")[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/deluge.svg)][hub][![Docker Stars](https://img.shields.io/docker/stars/linuxserver/deluge.svg)][hub][![Build Status](https://ci.linuxserver.io/buildStatus/icon?job=Docker-Builders/x86-64/x86-64-deluge)](https://ci.linuxserver.io/job/Docker-Builders/job/x86-64/job/x86-64-deluge/)
-
-[deluge](http://deluge-torrent.org/) Deluge is a lightweight, Free Software, cross-platform BitTorrent client.
-
+* OpenVPN
 * Full Encryption
 * WebUI
 * Plugin System
+* Auto update openvpn and deluge on startup
 * Much more...
 
-[![deluge](https://avatars2.githubusercontent.com/u/6733935?v=3&s=200)][appurl]
+It bundles certificates and configurations for the following VPN providers:
+
+| Provider Name                | Config Value |
+|:-----------------------------|:-------------|
+| Anonine | `ANONINE` |
+| BTGuard | `BTGUARD` |
+| Cryptostorm | `CRYPTOSTORM` |
+| FrootVPN | `FROOT` |
+| FrostVPN | `FROSTVPN` |
+| Giganews | `GIGANEWS` |
+| HideMe | `HIDEME` |
+| HideMyAss | `HIDEMYASS` |
+| IntegrityVPN | `INTEGRITYVPN` |
+| IPVanish | `IPVANISH` |
+| Ivacy | `IVACY` |
+| IVPN | `IVPN` |
+| Newshosting | `NEWSHOSTING` |
+| NordVPN | `NORDVPN` |
+| OVPN | `OVPN` |
+| Private Internet Access | `PIA` |
+| PrivateVPN | `PRIVATEVPN` |
+| PureVPN | `PUREVPN` |
+| RA4W VPN | `RA4W` |
+| SlickVPN | `SLICKVPN` |
+| SmartVPN | `SMARTVPN` |
+| TigerVPN | `TIGER` |
+| TorGuard | `TORGUARD` |
+| UsenetServerVPN | `USENETSERVER` |
+| Windscribe | `WINDSCRIBE` |
+| VPN.ht | `VPNHT` |
+| VPNBook.com | `VPNBOOK` |
+| VyprVpn | `VYPRVPN` |
+When using PIA as provider it will update Transmission hourly with assigned open port. Please read the instructions below.
+
+## Run container from Docker registry
+The container is available from the Docker registry and this is the simplest way to get it.
+To run the container use this command:
+
+```
+$ docker run -d \
+              -v /your/storage/path/:/data \
+              -v /your/storage/path/:/config \
+              -v /your/storage/path/:/etc/openvpn \
+              -v /etc/localtime:/etc/localtime:ro \
+              -e "OPENVPN_PROVIDER=PIA" \
+              -e "OPENVPN_CONFIG=Netherlands" \
+              -e "OPENVPN_USERNAME=user" \
+              -e "OPENVPN_PASSWORD=pass" \
+              -e "PUID=1001" \
+              -e "GUID=2001" \
+              -p 9091:9091 \
+              raiu/deluge-openvpn
+```
+
+You must set the environment variables `OPENVPN_PROVIDER`, `OPENVPN_USERNAME` and `OPENVPN_PASSWORD` to provide basic connection details.
+
+The `OPENVPN_CONFIG` is an optional variable. If no config is given, a default config will be selected for the provider you have chosen.
+Find available OpenVPN configurations by looking in the openvpn folder of the GitHub repository. The value that you should use here is the filename of your chosen openvpn configuration *without* the .ovpn file extension. For example:
+
+```
+-e "OPENVPN_CONFIG=ipvanish-AT-Vienna-vie-c02"
+```
+
+As you can see, the container also expects a data volume to be mounted.
+This is where Deluge should store your downloads and incomplete downloads.
+By default deluge home will be located at /config, this is where Deluge stores its state.
+
+
+### Required environment options
+| Variable | Function | Example |
+|----------|----------|-------|
+|`OPENVPN_PROVIDER` | Sets the OpenVPN provider to use. | `OPENVPN_PROVIDER=provider`. Supported providers and their config values are listed in the table above. |
+|`OPENVPN_USERNAME`|Your OpenVPN username |`OPENVPN_USERNAME=asdf`|
+|`OPENVPN_PASSWORD`|Your OpenVPN password |`OPENVPN_PASSWORD=asdf`|
+
+### Network configuration options
+| Variable | Function | Example |
+|----------|----------|-------|
+|`OPENVPN_CONFIG` | Sets the OpenVPN endpoint to connect to. | `OPENVPN_CONFIG=UK Southampton`|
+|`OPENVPN_OPTS` | Will be passed to OpenVPN on startup | See [OpenVPN doc](https://openvpn.net/index.php/open-source/documentation/manuals/65-openvpn-20x-manpage.html) |
+|`LOCAL_NETWORK` | Sets the local network that should have access. | `LOCAL_NETWORK=192.168.0.0/24`|
 
 ## Usage
+
+Deluge is started automaticly when OpenVPN connection has been initiated.
 
 ```
 docker create \
@@ -32,7 +103,6 @@ docker create \
   --net=host \
   -e PUID=<UID> -e PGID=<GID> \
   -e TZ=<timezone> \
-  -e UMASK_SET=<022> \
   -v </path/to/your/downloads>:/downloads \
   -v </path/to/deluge/config>:/config \
   linuxserver/deluge
@@ -48,10 +118,9 @@ http://192.168.x.x:8080 would show you what's running INSIDE the container on po
 
 * `--net=host` - Shares host networking with container, **required**.
 * `-v /config` - deluge configs
-* `-v /downloads` - torrent download directory
-* `-e PGID` for GroupID - see below for explanation
-* `-e PUID` for UserID - see below for explanation
-* `-e UMASK_SET` for umask setting of deluge, *optional* , default if left unset is 022. 
+* `-v /data` - torrent download directory
+* `-e PGID` for for GroupID - see below for explanation
+* `-e PUID` for for UserID - see below for explanation
 * `-e TZ` for timezone information, eg Europe/London
 
 It is based on alpine linux with s6 overlay, for shell access whilst the container is running do `docker exec -it deluge /bin/bash`.
@@ -79,28 +148,19 @@ Change the downloads location in the webui in Preferences->Downloads and use /do
 
 * Monitor the logs of the container in realtime `docker logs -f deluge`.
 
-* container version number 
+### Execute script for deluge
+    #!/bin/bash
+    torrentid=$1
+    torrentname=$2
+    torrentdir=$3
+    torrentpath="$torrentdir/$torrentname"
 
-`docker inspect -f '{{ index .Config.Labels "build_version" }}' deluge`
+    filemask=777
 
-* image version number
-
-`docker inspect -f '{{ index .Config.Labels "build_version" }}' linuxserver/deluge`
-
-## Versions
-
-+ **01.07.17:** Add curl package.
-+ **26.05.17:** Rebase to alpine 3.6.
-+ **29.04.17:** Add variable for user defined umask.
-+ **28.04.17:** update to libressl2.5-libssl.
-+ **28.12.16:** Rebase to alpine 3.5 baseimage.
-+ **17.11.16:** Rebase to edge baseimage.
-+ **13.10.16:** Switch to libressl as openssl deprecated from alpine linux and deluge dependency
-no longer installs.
-+ **30.09.16:** Fix umask.
-+ **09.09.16:** Add layer badges to README.
-+ **30.08.16:** Use pip packages for some critical dependencies.
-+ **28.08.16:** Add badges to README.
-+ **15.08.16:** Rebase to alpine linux.
-+ **09.11.15:** Add unrar and unzip
-+ **15.10.15:** Initial Release. 
+    if   [ -d "${torrentpath}" ]
+            then
+                    chmod ${filemask} -R "${torrentpath}"
+    elif [ -f "${torrentpath}" ]
+            then
+                    chmod ${filemask} "${torrentpath}"
+    fi

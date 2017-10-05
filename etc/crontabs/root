@@ -1,0 +1,5 @@
+
+# do daily/weekly/monthly maintenance
+# min	hour	day	month	weekday	command
+*/15	*	*	*	*	/etc/init.d/openvpn-serv --ifstarted cronjob
+*/10	*	*	*	*	/etc/init.d/deluged --ifstarted cronjob
